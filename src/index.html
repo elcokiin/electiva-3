@@ -1,28 +1,37 @@
 <!doctype html>
 <script>
   const img = new Image();
+  let currentImage = "dog.svg";
+
   navigator.serviceWorker
     .register("./sw.js")
     .then((reg) => console.log("SW registered!", reg))
     .catch((err) => console.error(err));
 
   setTimeout(() => {
-    img.src = "dog.svg";
+    img.src = currentImage;
     document.body.appendChild(img);
   }, 3000);
 
   img.addEventListener("click", () => {
     if (navigator.serviceWorker.controller) {
       navigator.serviceWorker.controller.postMessage({
-        action: "switchToCat",
+        action: "swap",
+        current: currentImage,
       });
-      if (img.src.includes("cat.svg")) {
-        img.src = "dog.svg";
-      } else {
-        img.src = "cat.svg?t=" + Date.now();
-      }
+
+      // Forzar nuevo fetch con timestamp para que el SW lo intercepte
+      img.src = currentImage + "?t=" + Date.now();
 
       console.log("Click a la imagen");
+    }
+  });
+
+  // Escuchar mensajes del SW para saber qué imagen se eligió
+  navigator.serviceWorker.addEventListener("message", (event) => {
+    if (event.data.action === "swapped") {
+      currentImage = event.data.image;
+      console.log("Imagen cambiada a:", currentImage);
     }
   });
 </script>
