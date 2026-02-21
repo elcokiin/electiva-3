@@ -1,0 +1,32 @@
+<!doctype html>
+<script>
+  const img = new Image();
+  navigator.serviceWorker
+    .register("./sw.js")
+    .then((reg) => console.log("SW registered!", reg))
+    .catch((err) => console.error(err));
+
+  setTimeout(() => {
+    img.src = "dog.svg";
+    document.body.appendChild(img);
+  }, 3000);
+
+  img.addEventListener("click", () => {
+    if (navigator.serviceWorker.controller) {
+      navigator.serviceWorker.controller.postMessage({
+        action: "switchToCat",
+      });
+      if (img.src.includes("cat.svg")) {
+        img.src = "dog.svg";
+      } else {
+        img.src = "cat.svg?t=" + Date.now();
+      }
+
+      console.log("Click a la imagen");
+    }
+  });
+</script>
+
+<body>
+  Algo aquí en el DOM
+</body>
