@@ -7,9 +7,7 @@ self.addEventListener("install", (event) => {
   console.log("Service worker installing....");
 
   event.waitUntil(
-    caches
-      .open("cacheApp")
-      .then((cache) => cache.addAll(images)),
+    caches.open("cacheApp").then((cache) => cache.addAll(images)),
   );
 });
 
@@ -25,7 +23,6 @@ self.addEventListener("message", (event) => {
     currentImage = swappedImage;
     shouldSwap = true;
 
-    // Responder al cliente con la imagen elegida
     event.source.postMessage({
       action: "swapped",
       image: swappedImage,
@@ -40,7 +37,53 @@ self.addEventListener("fetch", (e) => {
   if (isAnimalImage && shouldSwap) {
     shouldSwap = false;
     e.respondWith(caches.match(swappedImage));
-  } else {
-    e.respondWith(fetch(e.request));
+    return;
   }
+
+  if (url.pathname.endsWith("/api/search")) {
+    const query = url.searchParams.get("q") || "";
+    const results = images.filter((img) =>
+      img.replace(".svg", "").toLowerCase().includes(query.toLowerCase()),
+    );
+
+    const responseData =
+      results.length > 0
+        ? { found: true, images: results, first: results[0] }
+        : { found: false, message: "Animal no encontrado para: " + query };
+
+    e.respondWith(
+      new Response(JSON.stringify(responseData), {
+        headers: { "Content-Type": "application/json" },
+      }),
+    );
+    return;
+  }
+
+  if (url.pathname.endsWith("/api/random")) {
+    const randomImage = images[Math.floor(Math.random() * images.length)];
+
+    e.respondWith(
+      caches.open("cacheApp").then((cache) => {
+        return cache.match(randomImage).then((cachedResponse) => {
+          if (cachedResponse) {
+            return new Response(cachedResponse.body, {
+              headers: {
+                "Content-Type": "image/svg+xml",
+                "X-Animal-Name": randomImage,
+              },
+            });
+          }
+          return new Response(
+            JSON.stringify({ error: "Imagen no encontrada en cache" }),
+            {
+              headers: { "Content-Type": "application/json" },
+            },
+          );
+        });
+      }),
+    );
+    return;
+  }
+
+  e.respondWith(fetch(e.request));
 });
