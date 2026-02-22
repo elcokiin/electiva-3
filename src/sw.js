@@ -4,7 +4,7 @@ let shouldSwap = false;
 let swappedImage = null;
 
 self.addEventListener("install", (event) => {
-  console.log("Service worker installing....");
+  console.log("Service worker VERSION 2 installing....");
 
   event.waitUntil(
     caches.open("cacheApp").then((cache) => cache.addAll(images)),
