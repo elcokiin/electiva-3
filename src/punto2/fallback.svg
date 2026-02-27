@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300">
+  <rect width="400" height="300" fill="#222"/>
+  <text x="200" y="140" text-anchor="middle" font-family="sans-serif" font-size="40" fill="#555">⏱</text>
+  <text x="200" y="185" text-anchor="middle" font-family="sans-serif" font-size="18" fill="#888">Imagen tardó más de 3s</text>
+</svg>
