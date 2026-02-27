@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PWA Simulator Pagos - Promesas</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#4CAF50">
+</head>
+<body>
+
+    <header>
+        <h1>Simulador de Pagos PWA</h1>
+        <div class="toggle-container">
+            <label for="offline-toggle" class="toggle-label">Forzar Offline (Simular Sin Internet)</label>
+            <label class="switch">
+                <input type="checkbox" id="offline-toggle">
+                <span class="slider round"></span>
+            </label>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="checkout-form-container">
+            <h2>Detalles de Pago</h2>
+            <form id="payment-form">
+                
+                <div class="form-group">
+                    <label for="nombre">Nombre Completo</label>
+                    <input type="text" id="nombre" name="nombre" placeholder="Ej. Juan Pérez" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="cedula">Cédula de Identidad</label>
+                    <input type="text" id="cedula" name="cedula" placeholder="Ej. 123456789" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="tarjeta">Número de Tarjeta de Crédito</label>
+                    <input type="text" id="tarjeta" name="tarjeta" placeholder="1111 2222 3333 4444" maxlength="19" required>
+                    <small>Usa '1111' en la tarjeta para simular error de datos.</small>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group half-width">
+                        <label for="expiracion">Expiración (MM/AA)</label>
+                        <input type="text" id="expiracion" name="expiracion" placeholder="12/26" maxlength="5" required>
+                    </div>
+                    <div class="form-group half-width">
+                        <label for="cvv">CVV</label>
+                        <input type="text" id="cvv" name="cvv" placeholder="123" maxlength="4" required>
+                    </div>
+                </div>
+
+                <button type="submit" id="pay-button" class="btn-pay">Pagar Ahora</button>
+                <div id="loading-spinner" class="spinner hidden">Procesando Pago...</div>
+            </form>
+        </section>
+
+        <section class="logs-container">
+            <h2>Registro de Promesas (Consola Visual)</h2>
+            <div id="logs" class="logs-box">
+                <!-- Los logs se añadirán aquí -->
+            </div>
+            <button id="clear-logs" class="btn-secondary">Limpiar Logs</button>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(registration => {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch(registrationError => {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+        }
+    </script>
+</body>
+</html>
