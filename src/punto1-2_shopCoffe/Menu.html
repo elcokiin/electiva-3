@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/menu.css">
+    <meta name="theme-color" content="#db4938">
+    <title>Menú - Cafeteria PWA</title>
+</head>
+
+<body>
+    <main>
+        <nav style="position: relative;">
+            <h1>Cafeteria PWA</h1>
+            <div></div>
+            <h2>Nuestro Menú</h2>
+            <a class="order-counter" href="list.html">
+                ☕ Órdenes: <span id="counter-value">0</span>
+            </a>
+            <p></p>
+        </nav>
+
+        <div class="menu-toolbar">
+            <a href="Menu.html" class="back-link">← Volver al inicio</a>
+        </div>
+
+        <div id="menu-container" class="container">
+            <h2 style="text-align:center;">Cargando menú...</h2>
+        </div>
+
+        <!-- Modal de confirmación -->
+        <div id="modal-overlay" class="modal-overlay" style="display:none;">
+            <div class="modal">
+                <h3 id="modal-title">Confirmar acción</h3>
+                <p id="modal-message"></p>
+                <div class="modal-buttons">
+                    <button id="modal-confirm" class="btn-confirm">Confirmar</button>
+                    <button id="modal-cancel" class="btn-cancel">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/appmenu.js"></script>
+</body>
+
+</html>

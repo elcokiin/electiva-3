@@ -1,0 +1,208 @@
+/* Estilos específicos para la vista de órdenes */
+.list-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    margin-bottom: 1rem;
+}
+
+.back-link {
+    display: inline-block;
+    color: #db4938;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+.btn-clear {
+    background: #fff;
+    color: #db4938;
+    border: 2px solid #db4938;
+    padding: 0.3rem 1rem;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-family: inherit;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+.btn-clear:hover {
+    background: #db4938;
+    color: #fff;
+}
+
+/* Contenedor de órdenes en grid, igual que .container */
+.orders-wrapper {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    grid-gap: 1rem;
+    justify-content: center;
+    align-items: start;
+    margin: auto;
+    padding: 1rem 0;
+}
+
+/* Tarjeta de orden */
+.order-card {
+    background: #fff;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+    border-radius: 10px;
+    padding: 1.2rem;
+    text-align: left;
+    position: relative;
+}
+
+.order-card h3 {
+    color: #db4938;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    text-transform: capitalize;
+}
+
+.order-card p {
+    color: #555;
+    font-size: 0.9rem;
+    margin-bottom: 0.3rem;
+}
+
+.order-card .order-price {
+    color: #db4938;
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-top: 0.4rem;
+}
+
+.order-card .order-date {
+    color: #aaa;
+    font-size: 0.78rem;
+    margin-top: 0.5rem;
+}
+
+.order-card .badge {
+    display: inline-block;
+    background: #db4938;
+    color: #fff;
+    font-size: 0.75rem;
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin-right: 4px;
+}
+
+.order-card .btn-delete {
+    position: absolute;
+    top: 0.8rem;
+    right: 0.8rem;
+    background: none;
+    border: none;
+    color: #ccc;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: color 0.2s;
+    font-family: inherit;
+}
+
+.order-card .btn-delete:hover {
+    color: #db4938;
+}
+
+/* Estado vacío */
+.empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: #aaa;
+    padding: 3rem 1rem;
+}
+
+.empty-state span {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 1rem;
+}
+
+/* Modal */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal {
+    background: #fff;
+    border-radius: 10px;
+    padding: 2rem;
+    max-width: 360px;
+    width: 90%;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.modal h3 {
+    color: #db4938;
+    margin-bottom: 1rem;
+}
+
+.modal p {
+    color: #444;
+    margin-bottom: 1.5rem;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.btn-confirm {
+    background: #db4938;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1.5rem;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: background 0.3s;
+}
+
+.btn-confirm:hover {
+    background: #c0392b;
+}
+
+.btn-cancel {
+    background: #eee;
+    color: #444;
+    border: none;
+    padding: 0.5rem 1.5rem;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: background 0.3s;
+}
+
+.btn-cancel:hover {
+    background: #ddd;
+}
+
+.success-msg {
+    grid-column: 1 / -1;
+    text-align: center;
+    background: #d4edda;
+    color: #155724;
+    padding: 1rem;
+    border-radius: 8px;
+    font-weight: bold;
+    display: none;
+}

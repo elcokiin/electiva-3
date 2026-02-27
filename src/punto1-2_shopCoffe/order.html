@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/order.css">
+    <meta name="theme-color" content="#db4938">
+    <title>Ordena tu Café - Cafeteria PWA</title>
+</head>
+
+<body>
+    <main>
+        <nav>
+            <h1>Cafeteria PWA</h1>
+        </nav>
+
+        <div class="order-container">
+            <a href="Menu.html" class="back-link">← Volver al menú</a>
+
+            <h2 id="coffee-title">Personaliza tu orden</h2>
+
+            <form id="order-form">
+                <div class="form-group">
+                    <label for="size">Tamaño del vaso:</label>
+                    <select id="size" name="size" required>
+                        <option value="Pequeño">Pequeño (8 oz) $4000</option>
+                        <option value="Mediano" selected>Mediano (12 oz) $6000</option>
+                        <option value="Grande">Grande (16 oz) $8000</option>
+                    </select>
+                </div>
+
+                <div class="form-group checkbox-group">
+                    <input type="checkbox" id="sugar" name="sugar">
+                    <label for="sugar" style="margin-bottom: 0;">¿Deseas agregar azúcar?</label>
+                </div>
+
+                <button type="submit" class="btn-submit">Confirmar Pedido</button>
+            </form>
+
+            <div id="order-result"></div>
+        </div>
+    </main>
+
+    <script src="js/apporder.js"></script>
+
+</html>
