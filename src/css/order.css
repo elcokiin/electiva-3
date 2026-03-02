@@ -1,0 +1,207 @@
+  /* Estilos específicos para la vista de la orden */
+  .order-container {
+      max-width: 400px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background: #f9f9f9;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .back-link {
+      display: inline-block;
+      margin-bottom: 1.5rem;
+      color: #db4938;
+      text-decoration: none;
+      font-weight: bold;
+  }
+
+  .form-group {
+      margin-bottom: 1.5rem;
+  }
+
+  .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: #333;
+  }
+
+  .form-group select {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1rem;
+  }
+
+  .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+  }
+
+  .btn-submit {
+      width: 100%;
+      background-color: #db4938;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 5px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+  }
+
+  .btn-submit:hover {
+      background-color: #c0392b;
+  }
+
+  #order-result {
+      margin-top: 1.5rem;
+      padding: 1rem;
+      border-radius: 5px;
+      display: none;
+      text-align: center;
+      font-weight: bold;
+  }
+
+  .success {
+      background: #d4edda;
+      color: #155724;
+  }
+
+  .panel {
+      background: #fffaf7;
+      border-radius: 16px;
+      box-shadow: 0 12px 20px rgba(43, 29, 22, 0.12);
+      padding: 1.5rem;
+      margin: 1.5rem auto;
+      text-align: left;
+      max-width: 800px;
+  }
+
+  .panel__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+  }
+
+  .approval-actions {
+      display: flex;
+      gap: 0.75rem;
+  }
+
+  .btn-approve,
+  .btn-reject {
+      border: none;
+      border-radius: 999px;
+      padding: 0.45rem 1.2rem;
+      font-weight: 700;
+      cursor: pointer;
+  }
+
+  .btn-approve {
+      background: #2f9e6e;
+      color: #fff;
+  }
+
+  .btn-reject {
+      background: #f7e2d9;
+      color: #9b2c1e;
+  }
+
+  .status {
+      margin-top: 0.75rem;
+      font-weight: 600;
+      color: #5c4639;
+  }
+
+  .status--approved {
+      color: #1b7a52;
+  }
+
+  .status--rejected {
+      color: #b93824;
+  }
+
+  .orders-list {
+      margin-top: 1rem;
+      display: grid;
+      gap: 0.75rem;
+  }
+
+  .order-card {
+      padding: 0.9rem 1rem;
+      background: #fff;
+      border-radius: 12px;
+      border: 1px solid #f0e2d9;
+  }
+
+  .order-card h3 {
+      margin-bottom: 0.4rem;
+      color: #2b1d16;
+  }
+
+  .order-card p {
+      color: #6b4f3f;
+      font-size: 0.95rem;
+  }
+
+  .stack-form {
+      margin-top: 1rem;
+      display: grid;
+      gap: 1rem;
+  }
+
+  .stack-form input,
+  .stack-form select {
+      width: 100%;
+      padding: 0.55rem 0.6rem;
+      border-radius: 6px;
+      border: 1px solid #d8c7bb;
+      font-size: 1rem;
+  }
+
+  .radio-group {
+      display: flex;
+      gap: 1rem;
+  }
+
+  .radio-option {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-weight: 600;
+      color: #4f3b31;
+  }
+
+  .payment-card {
+      margin-top: 0.5rem;
+      display: none;
+      gap: 1rem;
+  }
+
+  .payment-card.is-visible {
+      display: grid;
+  }
+
+  .form-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 1rem;
+  }
+
+  @media (max-width: 540px) {
+      .approval-actions {
+          width: 100%;
+          justify-content: flex-start;
+      }
+
+      .radio-group {
+          flex-direction: column;
+          align-items: flex-start;
+      }
+  }

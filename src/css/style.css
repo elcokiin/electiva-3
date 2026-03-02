@@ -1,0 +1,200 @@
+@import url("https://fonts.googleapis.com/css?family=Nunito:400,700&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #fdfdfd;
+  font-family: "Nunito", sans-serif;
+  font-size: 1rem;
+}
+
+main {
+  max-width: 900px;
+  margin: auto;
+  padding: 0.5rem;
+  text-align: center;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+ul {
+  list-style: none;
+  display: flex;
+}
+
+li {
+  margin-right: 1rem;
+}
+
+h1 {
+  color: #e74c3c;
+  margin-bottom: 0.5rem;
+}
+
+h2 {
+  color: #2b1d16;
+}
+
+.panel {
+  background: #fffaf7;
+  border-radius: 16px;
+  box-shadow: 0 12px 20px rgba(43, 29, 22, 0.12);
+  padding: 1.5rem;
+  margin: 1.5rem auto 0;
+  text-align: left;
+}
+
+.panel--wide {
+  max-width: 900px;
+}
+
+.panel__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.approval-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.btn-approve,
+.btn-reject {
+  border: none;
+  border-radius: 999px;
+  padding: 0.45rem 1.2rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn-approve {
+  background: #2f9e6e;
+  color: #fff;
+}
+
+.btn-reject {
+  background: #f7e2d9;
+  color: #9b2c1e;
+}
+
+.status {
+  margin-top: 0.75rem;
+  font-weight: 600;
+  color: #5c4639;
+}
+
+.status--approved {
+  color: #1b7a52;
+}
+
+.status--rejected {
+  color: #b93824;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  grid-gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  padding: 1rem 0;
+}
+
+.card {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 15rem auto;
+  height: 15rem;
+  background: #fff;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+  border-radius: 10px;
+  margin: auto;
+  overflow: hidden;
+}
+
+.card--avatar {
+  width: 100%;
+  height: 10rem;
+  object-fit: cover;
+}
+
+.card--title {
+  color: #222;
+  font-weight: 700;
+  text-transform: capitalize;
+  font-size: 1.1rem;
+  margin-top: 0.5rem;
+}
+
+.card--prices {
+  font-size: 0.85rem;
+  color: #6b4f3f;
+  margin: 0.35rem 0 0.5rem;
+}
+
+.card--link {
+  text-decoration: none;
+  background: #db4938;
+  color: #fff;
+  padding: 0.3rem 1rem;
+  border-radius: 20px;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.order-counter {
+  background: #fff;
+  color: #db4938;
+  padding: 5px 15px;
+  border-radius: 20px;
+  font-weight: bold;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  white-space: nowrap;
+  transition: all 0.3s ease;
+}
+
+@media (max-width: 480px) {
+  .navbar {
+    justify-content: center;
+    flex-direction: column;
+    padding: 15px 10px;
+  }
+
+  .navbar h1 {
+    margin: 0;
+  }
+
+  .order-counter {
+    font-size: 0.9rem;
+    padding: 4px 12px;
+  }
+
+  .panel {
+    padding: 1.25rem;
+  }
+
+  .approval-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/order.css">
+    <meta name="theme-color" content="#db4938">
+    <title>Ordena tu Café - Cafeteria PWA</title>
+</head>
+
+<body>
+    <main>
+        <nav>
+            <h1>Cafeteria PWA</h1>
+        </nav>
+
+        <div class="order-container">
+            <a href="index.html" class="back-link">← Volver al menú</a>
+
+            <h2 id="coffee-title">Personaliza tu orden</h2>
+
+            <form id="order-form">
+                <div class="form-group">
+                    <label for="size">Tamaño del vaso:</label>
+                    <select id="size" name="size" required>
+                        <option value="Pequeño">Pequeño (8 oz) $4000</option>
+                        <option value="Mediano" selected>Mediano (12 oz) $6000</option>
+                        <option value="Grande">Grande (16 oz) $8000</option>
+                    </select>
+                </div>
+
+                <div class="form-group checkbox-group">
+                    <input type="checkbox" id="sugar" name="sugar">
+                    <label for="sugar" style="margin-bottom: 0;">¿Deseas agregar azúcar?</label>
+                </div>
+
+                <button type="submit" class="btn-submit">Confirmar Pedido</button>
+            </form>
+
+            <div id="order-result"></div>
+        </div>
+        <section class="panel panel--wide">
+            <div class="panel__header">
+                <h2>Ordenes actuales</h2>
+                <div class="approval-actions">
+                    <button type="button" id="orders-confirm" class="btn-approve">Confirmar</button>
+                    <button type="button" id="orders-reject" class="btn-reject">Rechazar</button>
+                </div>
+            </div>
+            <p id="orders-status" class="status status--pending">Operacion pendiente de confirmacion.</p>
+            <div id="orders-list" class="orders-list"></div>
+        </section>
+        <section class="panel panel--wide">
+            <div class="panel__header">
+                <h2>Modificar orden</h2>
+                <div class="approval-actions">
+                    <button type="button" id="edit-confirm" class="btn-approve">Confirmar</button>
+                    <button type="button" id="edit-reject" class="btn-reject">Rechazar</button>
+                </div>
+            </div>
+            <p id="edit-status" class="status status--pending">Operacion pendiente de confirmacion.</p>
+            <form id="edit-form" class="stack-form">
+                <div class="form-group">
+                    <label for="edit-order">Selecciona la orden</label>
+                    <select id="edit-order" required></select>
+                </div>
+                <div class="form-group">
+                    <label for="edit-size">Nuevo tamaño</label>
+                    <select id="edit-size" required>
+                        <option value="Pequeño">Pequeño (8 oz) $4000</option>
+                        <option value="Mediano">Mediano (12 oz) $6000</option>
+                        <option value="Grande">Grande (16 oz) $8000</option>
+                    </select>
+                </div>
+                <div class="form-group checkbox-group">
+                    <input type="checkbox" id="edit-sugar">
+                    <label for="edit-sugar" style="margin-bottom: 0;">¿Desea agregar azúcar?</label>
+                </div>
+            </form>
+        </section>
+        <section class="panel panel--wide">
+            <div class="panel__header">
+                <h2>Pago de orden</h2>
+                <div class="approval-actions">
+                    <button type="button" id="payment-confirm" class="btn-approve">Confirmar</button>
+                    <button type="button" id="payment-reject" class="btn-reject">Rechazar</button>
+                </div>
+            </div>
+            <p id="payment-status" class="status status--pending">Operacion pendiente de confirmacion.</p>
+            <form id="payment-form" class="stack-form">
+                <div class="form-group">
+                    <label for="payment-order">Orden a pagar</label>
+                    <select id="payment-order" required></select>
+                </div>
+                <div class="form-group">
+                    <label>Metodo de pago</label>
+                    <div class="radio-group">
+                        <label class="radio-option">
+                            <input type="radio" name="payment-method" value="cash" checked>
+                            Efectivo
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="payment-method" value="card">
+                            Tarjeta de credito
+                        </label>
+                    </div>
+                </div>
+                <div id="cash-fields" class="form-group">
+                    <label for="cash-amount">Monto recibido</label>
+                    <input type="number" id="cash-amount" min="0" step="0.01" placeholder="0.00">
+                </div>
+                <div id="card-fields" class="payment-card">
+                    <div class="form-group">
+                        <label for="card-name">Nombre en la tarjeta</label>
+                        <input type="text" id="card-name" placeholder="Nombre completo">
+                    </div>
+                    <div class="form-group">
+                        <label for="card-number">Numero de tarjeta</label>
+                        <input type="text" id="card-number" placeholder="0000 0000 0000 0000">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="card-exp">Vencimiento</label>
+                            <input type="text" id="card-exp" placeholder="MM/AA">
+                        </div>
+                        <div class="form-group">
+                            <label for="card-cvv">CVV</label>
+                            <input type="text" id="card-cvv" placeholder="123">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </section>
+    </main>
+
+    <script src="js/apporder.js"></script>
+
+</html>
