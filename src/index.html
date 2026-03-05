@@ -1,0 +1,243 @@
+
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FetchAPIApp - Usuarios</title>
+    <style>
+      :root {
+        --bg: #f4f1ed;
+        --panel: #ffffff;
+        --ink: #2b2a28;
+        --accent: #1b6ca8;
+        --muted: #6b6b6b;
+        --line: #e2ddd6;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Trebuchet MS", "Gill Sans", "Segoe UI", sans-serif;
+        background: radial-gradient(circle at top, #fff6ea 0%, var(--bg) 55%);
+        color: var(--ink);
+      }
+
+      header {
+        padding: 32px 20px 16px;
+        text-align: center;
+      }
+
+      header h1 {
+        margin: 0 0 8px;
+        font-size: 2rem;
+        letter-spacing: 0.5px;
+      }
+
+      header p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      main {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 20px 48px;
+        display: grid;
+        gap: 24px;
+      }
+
+      section {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        padding: 20px;
+        box-shadow: 0 12px 30px rgba(40, 35, 25, 0.08);
+      }
+
+      .table-wrap {
+        overflow-x: auto;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 720px;
+      }
+
+      thead th {
+        text-align: left;
+        padding: 12px 10px;
+        border-bottom: 2px solid var(--line);
+        font-size: 0.95rem;
+      }
+
+      tbody td {
+        padding: 12px 10px;
+        border-bottom: 1px solid var(--line);
+        vertical-align: top;
+      }
+
+      .action-cell {
+        white-space: nowrap;
+      }
+
+      .action-button {
+        border: 1px solid var(--line);
+        background: #f2ece4;
+        color: var(--ink);
+        padding: 6px 10px;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        cursor: pointer;
+        margin-right: 6px;
+      }
+
+      .action-button:hover {
+        background: #e6ded2;
+      }
+
+      .action-button.danger {
+        background: #f7e3e1;
+        border-color: #f1c6c1;
+        color: #8a2b20;
+      }
+
+      a {
+        color: var(--accent);
+        font-weight: 600;
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      .status {
+        margin-top: 12px;
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      .detail-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 16px;
+        margin-top: 16px;
+      }
+
+      .detail-card {
+        background: #fbf7f1;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 12px;
+      }
+
+      .detail-card label {
+        display: block;
+        font-size: 0.8rem;
+        color: var(--muted);
+        margin-bottom: 6px;
+      }
+
+      .detail-card input {
+        width: 100%;
+        padding: 8px 10px;
+        border-radius: 8px;
+        border: 1px solid var(--line);
+        background: #fff;
+      }
+
+      .detail-card span {
+        font-weight: 600;
+      }
+
+      .empty-state {
+        color: var(--muted);
+        font-style: italic;
+      }
+
+      .gallery {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 16px;
+        margin-top: 16px;
+      }
+
+      .gallery figure {
+        margin: 0;
+        background: #fffaf2;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 12px;
+        text-align: center;
+      }
+
+      .gallery img {
+        max-width: 100%;
+        height: 160px;
+        object-fit: contain;
+      }
+
+      @media (max-width: 720px) {
+        header h1 {
+          font-size: 1.6rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Fetch API - Usuarios</h1>
+      <p>Tabla con usuarios y detalle editable.</p>
+    </header>
+    <main>
+      <section>
+        <h2>Listado de usuarios</h2>
+        <div class="table-wrap">
+          <table aria-label="Tabla de usuarios">
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Correo</th>
+                <th>Telefono</th>
+                <th>Compania</th>
+                <th>Website</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="users-table"></tbody>
+          </table>
+        </div>
+        <div id="table-status" class="status">Cargando usuarios...</div>
+      </section>
+
+      <section>
+        <h2>Detalle del usuario</h2>
+        <p class="status">Selecciona un nombre en la tabla para ver el detalle.</p>
+        <div id="detail" class="detail-grid"></div>
+      </section>
+
+      <section>
+        <h2>Imagenes con Blob</h2>
+        <p class="status">Cargadas usando Fetch API y response.blob().</p>
+        <div class="gallery">
+          <figure>
+            <img id="blob-image-1" alt="Ilustracion ADN" />
+            <figcaption>Imagen 1 (Blob)</figcaption>
+          </figure>
+          <figure>
+            <img id="blob-image-2" alt="Ilustracion algoritmo" />
+            <figcaption>Imagen 2 (Blob)</figcaption>
+          </figure>
+        </div>
+        <div id="image-status" class="status"></div>
+      </section>
+    </main>
+
+    <script src="./js/fetch.js"></script>
+  </body>
+</html>
