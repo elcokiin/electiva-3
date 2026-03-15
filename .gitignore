@@ -1,0 +1,6 @@
+/basecoat-repo/
+/chartjs-repo/
+node_modules
+dist
+public/js/basecoat
+src/.vite
