@@ -1,28 +1,134 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Financial App - Basecoat Setup</title>
+  <meta name="theme-color" content="#b45309" />
+  <meta name="description" content="Control Financiero - Panel principal" />
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="icon" href="/assets/icons/icon-192x192.png" />
+  <link rel="apple-touch-icon" href="/assets/icons/icon-192x192.png" />
+  <title>Control Financiero - Inicio</title>
   <script type="module" src="./main.js"></script>
+  <script type="module" src="./js/dashboard.js"></script>
 </head>
 
-<body class="min-h-screen bg-muted/30">
-  <main class="container max-w-3xl py-10">
-    <section class="card p-6">
-      <h1 class="text-2xl font-semibold tracking-tight">Basecoat Installed</h1>
-      <p class="text-muted-foreground mt-2">
-        Basecoat and full Tailwind utilities are now loaded from local npm packages.
-      </p>
+<body class="min-h-screen bg-background">
+  <div id="page-content">
 
-      <div class="mt-6 flex flex-wrap gap-3">
-        <button class="btn">Primary Action</button>
-        <button class="btn btn-secondary">Secondary</button>
-        <button class="btn btn-outline">Outline</button>
+    <div class="page-header">
+      <h1>Panel Principal</h1>
+      <p id="current-period">Cargando...</p>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="summary-grid" id="summary-cards">
+      <div class="card summary-card">
+        <header>
+          <span class="summary-label">Total Gastado</span>
+          <div class="summary-value" id="total-spent">$0</div>
+          <span class="summary-sub">Este mes</span>
+        </header>
       </div>
-    </section>
-  </main>
+      <div class="card summary-card">
+        <header>
+          <span class="summary-label">Presupuesto Restante</span>
+          <div class="summary-value" id="budget-remaining">$0</div>
+          <span class="summary-sub">Disponible</span>
+        </header>
+      </div>
+      <div class="card summary-card">
+        <header>
+          <span class="summary-label">Promedio Diario</span>
+          <div class="summary-value" id="daily-avg">$0</div>
+          <span class="summary-sub">Gasto promedio</span>
+        </header>
+      </div>
+      <div class="card summary-card">
+        <header>
+          <span class="summary-label">Transacciones</span>
+          <div class="summary-value" id="tx-count">0</div>
+          <span class="summary-sub">Este mes</span>
+        </header>
+      </div>
+    </div>
+
+    <!-- Debt Summary Cards -->
+    <div class="summary-grid" style="grid-template-columns: 1fr 1fr;" id="debt-summary">
+      <div class="card summary-card">
+        <header>
+          <span class="summary-label">Me Deben</span>
+          <div class="summary-value" id="total-receivable" style="color: oklch(0.60 0.18 150);">$0</div>
+          <span class="summary-sub" id="receivable-count">0 deudas pendientes</span>
+        </header>
+      </div>
+      <div class="card summary-card">
+        <header>
+          <span class="summary-label">Yo Debo</span>
+          <div class="summary-value" id="total-payable" style="color: oklch(0.55 0.20 25);">$0</div>
+          <span class="summary-sub" id="payable-count">0 deudas pendientes</span>
+        </header>
+      </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="charts-grid">
+      <div class="card">
+        <header>
+          <h2 class="text-base font-semibold">Presupuesto vs Gasto Real</h2>
+          <p class="text-sm text-muted-foreground">Comparacion por categoria</p>
+        </header>
+        <section>
+          <div class="chart-container">
+            <canvas id="chart-budget-vs-actual"></canvas>
+          </div>
+          <div id="budget-chart-empty" class="empty-state" style="display:none;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M7 11.207V17"/><path d="M11 8.207V17"/><path d="M15 12.207V17"/><path d="M19 5.207V17"/></svg>
+            <h3>Sin datos</h3>
+            <p>Agrega gastos y presupuestos para ver la comparacion</p>
+          </div>
+        </section>
+      </div>
+      <div class="card">
+        <header>
+          <h2 class="text-base font-semibold">Distribucion de Gastos</h2>
+          <p class="text-sm text-muted-foreground">Por categoria este mes</p>
+        </header>
+        <section>
+          <div class="chart-container">
+            <canvas id="chart-distribution"></canvas>
+          </div>
+          <div id="distribution-chart-empty" class="empty-state" style="display:none;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg>
+            <h3>Sin datos</h3>
+            <p>Agrega gastos para ver la distribucion</p>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- Monthly Trend Chart (full width) -->
+    <div class="card mt-4">
+      <header>
+        <h2 class="text-base font-semibold">Tendencia Mensual</h2>
+        <p class="text-sm text-muted-foreground">Ultimos 6 meses</p>
+      </header>
+      <section>
+        <div class="chart-container">
+          <canvas id="chart-trend"></canvas>
+        </div>
+        <div id="trend-chart-empty" class="empty-state" style="display:none;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"/></svg>
+          <h3>Sin datos</h3>
+          <p>Los datos de tendencia apareceran con el tiempo</p>
+        </div>
+      </section>
+    </div>
+
+  </div>
+
+  <div id="toaster" class="toaster"></div>
 </body>
 
 </html>

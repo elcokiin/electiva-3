@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#b45309" />
+  <meta name="description" content="Control Financiero - Presupuesto mensual" />
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="icon" href="/assets/icons/icon-192x192.png" />
+  <link rel="apple-touch-icon" href="/assets/icons/icon-192x192.png" />
+  <title>Control Financiero - Presupuesto</title>
+  <script type="module" src="./main.js"></script>
+  <script type="module" src="./js/budget.js"></script>
+</head>
+
+<body class="min-h-screen bg-background">
+  <div id="page-content">
+
+    <div class="page-header">
+      <h1>Presupuesto</h1>
+      <p>Establece y controla tu presupuesto mensual</p>
+    </div>
+
+    <!-- Month/Year Selector -->
+    <div class="flex items-center gap-3 mb-4 flex-wrap">
+      <select id="budget-month" class="select text-sm h-9">
+        <option value="0">Enero</option>
+        <option value="1">Febrero</option>
+        <option value="2">Marzo</option>
+        <option value="3">Abril</option>
+        <option value="4">Mayo</option>
+        <option value="5">Junio</option>
+        <option value="6">Julio</option>
+        <option value="7">Agosto</option>
+        <option value="8">Septiembre</option>
+        <option value="9">Octubre</option>
+        <option value="10">Noviembre</option>
+        <option value="11">Diciembre</option>
+      </select>
+      <select id="budget-year" class="select text-sm h-9">
+      </select>
+    </div>
+
+    <!-- Budget Form -->
+    <div class="card mb-4">
+      <header>
+        <h2 class="text-base font-semibold">Asignar Presupuesto</h2>
+        <p class="text-sm text-muted-foreground">Define cuanto deseas gastar en cada categoria</p>
+      </header>
+      <section>
+        <form id="budget-form" class="form grid gap-3">
+          <div id="budget-fields">
+            <!-- Category budget fields injected here -->
+          </div>
+          <button type="submit" class="btn mt-2">Guardar Presupuesto</button>
+        </form>
+      </section>
+    </div>
+
+    <!-- Budget Overview -->
+    <div class="card">
+      <header>
+        <h2 class="text-base font-semibold">Resumen del Presupuesto</h2>
+        <p class="text-sm text-muted-foreground" id="budget-summary-period">-</p>
+      </header>
+      <section id="budget-overview">
+        <div id="budget-overview-list">
+          <!-- Budget progress items injected here -->
+        </div>
+        <div id="budget-empty" class="empty-state">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="20" height="14" x="2" y="5" rx="2" />
+            <line x1="2" x2="22" y1="10" y2="10" />
+          </svg>
+          <h3>Sin presupuesto</h3>
+          <p>Usa el formulario de arriba para establecer tu presupuesto mensual</p>
+        </div>
+      </section>
+    </div>
+
+    <!-- Budget vs Actual Chart -->
+    <div class="card mt-4">
+      <header>
+        <h2 class="text-base font-semibold">Presupuesto vs Gasto Real</h2>
+      </header>
+      <section>
+        <div class="chart-container">
+          <canvas id="chart-budget-comparison"></canvas>
+        </div>
+      </section>
+    </div>
+
+  </div>
+
+  <div id="toaster" class="toaster"></div>
+</body>
+
+</html>

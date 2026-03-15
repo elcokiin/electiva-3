@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#b45309" />
+  <meta name="description" content="Control Financiero - Gestion de deudas" />
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="icon" href="/assets/icons/icon-192x192.png" />
+  <link rel="apple-touch-icon" href="/assets/icons/icon-192x192.png" />
+  <title>Control Financiero - Deudas</title>
+  <script type="module" src="./main.js"></script>
+  <script type="module" src="./js/deudas.js"></script>
+</head>
+
+<body class="min-h-screen bg-background">
+  <div id="page-content">
+
+    <div class="page-header flex items-start justify-between">
+      <div>
+        <h1>Deudas</h1>
+        <p>Controla lo que te deben y lo que debes</p>
+      </div>
+      <button class="btn btn-sm" onclick="document.getElementById('add-debt-dialog').showModal()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14" />
+          <path d="M12 5v14" />
+        </svg>
+        Nueva Deuda
+      </button>
+    </div>
+
+    <!-- Summary -->
+    <div class="summary-grid" style="grid-template-columns: 1fr 1fr;">
+      <div class="card summary-card">
+        <header>
+          <span class="summary-label">Me Deben</span>
+          <div class="summary-value" id="debt-receivable-total" style="color: oklch(0.60 0.18 150);">$0</div>
+          <span class="summary-sub" id="debt-receivable-count">0 deudas</span>
+        </header>
+      </div>
+      <div class="card summary-card">
+        <header>
+          <span class="summary-label">Yo Debo</span>
+          <div class="summary-value" id="debt-payable-total" style="color: oklch(0.55 0.20 25);">$0</div>
+          <span class="summary-sub" id="debt-payable-count">0 deudas</span>
+        </header>
+      </div>
+    </div>
+
+    <!-- Tabs: Me deben / Yo debo -->
+    <div class="tabs" id="debt-tabs">
+      <nav role="tablist" aria-orientation="horizontal">
+        <button role="tab" id="tab-receivable" aria-controls="panel-receivable" aria-selected="true" tabindex="0">
+          Me deben
+        </button>
+        <button role="tab" id="tab-payable" aria-controls="panel-payable" aria-selected="false" tabindex="0">
+          Yo debo
+        </button>
+      </nav>
+
+      <!-- Me deben panel -->
+      <div role="tabpanel" id="panel-receivable" aria-labelledby="tab-receivable" tabindex="-1" aria-selected="true">
+        <div class="card">
+          <section class="p-0">
+            <!-- Desktop Table -->
+            <div class="debt-table-desktop overflow-x-auto">
+              <table class="debt-table">
+                <thead>
+                  <tr>
+                    <th>Entidad</th>
+                    <th>Monto Total</th>
+                    <th>Abonado</th>
+                    <th>Restante</th>
+                    <th>Prioridad</th>
+                    <th>Fecha</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody id="receivable-table-body">
+                </tbody>
+              </table>
+            </div>
+            <!-- Mobile Cards -->
+            <div class="debt-cards-mobile p-3" id="receivable-cards">
+            </div>
+            <div id="receivable-empty" class="empty-state">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+                <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+              </svg>
+              <h3>Nadie te debe</h3>
+              <p>Agrega una deuda usando el boton "Nueva Deuda"</p>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <!-- Yo debo panel -->
+      <div role="tabpanel" id="panel-payable" aria-labelledby="tab-payable" tabindex="-1" aria-selected="false">
+        <div class="card">
+          <section class="p-0">
+            <!-- Desktop Table -->
+            <div class="debt-table-desktop overflow-x-auto">
+              <table class="debt-table">
+                <thead>
+                  <tr>
+                    <th>Entidad</th>
+                    <th>Monto Total</th>
+                    <th>Abonado</th>
+                    <th>Restante</th>
+                    <th>Prioridad</th>
+                    <th>Fecha</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody id="payable-table-body">
+                </tbody>
+              </table>
+            </div>
+            <!-- Mobile Cards -->
+            <div class="debt-cards-mobile p-3" id="payable-cards">
+            </div>
+            <div id="payable-empty" class="empty-state">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+                <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+              </svg>
+              <h3>No tienes deudas</h3>
+              <p>Agrega una deuda usando el boton "Nueva Deuda"</p>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Add Debt Dialog -->
+  <dialog class="dialog" id="add-debt-dialog" onclick="if(event.target===this) this.close()">
+    <div class="w-full sm:max-w-[425px]">
+      <header>
+        <h2>Nueva Deuda</h2>
+        <p>Registra una nueva deuda</p>
+      </header>
+      <section>
+        <form id="add-debt-form" class="form grid gap-4">
+          <div role="group" class="field">
+            <label for="debt-type">Tipo *</label>
+            <select id="debt-type" required>
+              <option value="receivable">Me deben</option>
+              <option value="payable">Yo debo</option>
+            </select>
+          </div>
+          <div role="group" class="field">
+            <label for="debt-entity">Entidad / Persona *</label>
+            <input id="debt-entity" type="text" placeholder="Ej: Juan Perez" required />
+          </div>
+          <div role="group" class="field">
+            <label for="debt-amount">Monto Total *</label>
+            <input id="debt-amount" type="number" min="1" step="1" placeholder="300000" required />
+          </div>
+          <div role="group" class="field">
+            <label for="debt-priority">Prioridad *</label>
+            <select id="debt-priority" required>
+              <option value="baja">Baja</option>
+              <option value="media" selected>Media</option>
+              <option value="alta">Alta</option>
+            </select>
+          </div>
+          <div role="group" class="field">
+            <label for="debt-date">Fecha de la deuda *</label>
+            <input id="debt-date" type="date" required />
+          </div>
+          <div role="group" class="field">
+            <label for="debt-notes">Notas</label>
+            <input id="debt-notes" type="text" placeholder="Notas opcionales" />
+          </div>
+        </form>
+      </section>
+      <footer>
+        <button class="btn-outline" onclick="document.getElementById('add-debt-dialog').close()">Cancelar</button>
+        <button class="btn" id="save-debt-btn">Guardar</button>
+      </footer>
+    </div>
+  </dialog>
+
+  <!-- Add Payment Dialog -->
+  <dialog class="dialog" id="payment-dialog" onclick="if(event.target===this) this.close()">
+    <div class="w-full sm:max-w-[380px]">
+      <header>
+        <h2>Registrar Abono</h2>
+        <p id="payment-dialog-subtitle">-</p>
+      </header>
+      <section>
+        <form id="payment-form" class="form grid gap-4">
+          <input type="hidden" id="payment-debt-id" />
+          <div role="group" class="field">
+            <label for="payment-amount">Monto del abono *</label>
+            <input id="payment-amount" type="number" min="1" step="1" required />
+          </div>
+          <div role="group" class="field">
+            <label for="payment-date">Fecha del abono *</label>
+            <input id="payment-date" type="date" required />
+          </div>
+        </form>
+        <!-- Payment History -->
+        <div class="mt-4" id="payment-history-section" style="display:none;">
+          <h3 class="text-sm font-semibold mb-2">Historial de Abonos</h3>
+          <div id="payment-history-list" class="text-sm space-y-1">
+          </div>
+        </div>
+      </section>
+      <footer>
+        <button class="btn-outline" onclick="document.getElementById('payment-dialog').close()">Cerrar</button>
+        <button class="btn" id="save-payment-btn">Abonar</button>
+      </footer>
+    </div>
+  </dialog>
+
+  <!-- Delete Debt Dialog -->
+  <dialog class="dialog" id="delete-debt-dialog" onclick="if(event.target===this) this.close()">
+    <div class="w-full sm:max-w-[350px]">
+      <header>
+        <h2>Confirmar Eliminacion</h2>
+        <p>Esta seguro de eliminar esta deuda? Se perdera todo el historial de abonos.</p>
+      </header>
+      <footer>
+        <button class="btn-outline" onclick="document.getElementById('delete-debt-dialog').close()">Cancelar</button>
+        <button class="btn" style="background-color: var(--destructive);" id="confirm-delete-debt-btn">Eliminar</button>
+      </footer>
+    </div>
+  </dialog>
+
+  <div id="toaster" class="toaster"></div>
+</body>
+
+</html>

@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#b45309" />
+  <meta name="description" content="Control Financiero - Configuracion" />
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="icon" href="/assets/icons/icon-192x192.png" />
+  <link rel="apple-touch-icon" href="/assets/icons/icon-192x192.png" />
+  <title>Control Financiero - Configuracion</title>
+  <script type="module" src="./main.js"></script>
+  <script type="module" src="./js/settings.js"></script>
+</head>
+
+<body class="min-h-screen bg-background">
+  <div id="page-content">
+
+    <div class="page-header">
+      <h1>Configuracion</h1>
+      <p>Personaliza tu aplicacion</p>
+    </div>
+
+    <!-- Appearance -->
+    <div class="card mb-4">
+      <header>
+        <h2 class="text-base font-semibold">Apariencia</h2>
+        <p class="text-sm text-muted-foreground">Personaliza el aspecto visual de la aplicacion</p>
+      </header>
+      <section>
+        <div role="group" class="field" data-orientation="horizontal">
+          <section>
+            <label for="theme-switch">Modo oscuro</label>
+            <p>Cambia entre el tema claro y oscuro</p>
+          </section>
+          <input id="theme-switch" type="checkbox" role="switch" />
+        </div>
+      </section>
+    </div>
+
+    <!-- Data Management -->
+    <div class="card mb-4">
+      <header>
+        <h2 class="text-base font-semibold">Gestion de Datos</h2>
+        <p class="text-sm text-muted-foreground">Exporta, importa o elimina tus datos</p>
+      </header>
+      <section class="grid gap-4">
+        <div class="flex flex-col sm:flex-row gap-3">
+          <button class="btn-outline flex-1" id="export-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="7 10 12 15 17 10" />
+              <line x1="12" x2="12" y1="15" y2="3" />
+            </svg>
+            Exportar Datos (JSON)
+          </button>
+          <label class="btn-outline flex-1 cursor-pointer text-center flex items-center justify-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="17 8 12 3 7 8" />
+              <line x1="12" x2="12" y1="3" y2="15" />
+            </svg>
+            Importar Datos (JSON)
+            <input type="file" id="import-file" accept=".json" class="hidden" />
+          </label>
+        </div>
+        <hr class="border-border" />
+        <div>
+          <button class="btn btn-sm" style="background-color: var(--destructive);" id="clear-data-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 6h18" />
+              <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+              <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+            </svg>
+            Borrar Todos los Datos
+          </button>
+          <p class="text-xs text-muted-foreground mt-1">Esta accion eliminara todos los gastos, presupuestos y deudas de forma permanente</p>
+        </div>
+      </section>
+    </div>
+
+    <!-- PWA Install -->
+    <div class="card mb-4" id="install-card" style="display:none;">
+      <header>
+        <h2 class="text-base font-semibold">Instalar Aplicacion</h2>
+        <p class="text-sm text-muted-foreground">Instala la app en tu dispositivo para acceso rapido</p>
+      </header>
+      <section>
+        <button class="btn" id="install-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="7 10 12 15 17 10" />
+            <line x1="12" x2="12" y1="15" y2="3" />
+          </svg>
+          Instalar en mi dispositivo
+        </button>
+      </section>
+    </div>
+
+    <!-- About -->
+    <div class="card">
+      <header>
+        <h2 class="text-base font-semibold">Acerca de</h2>
+      </header>
+      <section class="text-sm text-muted-foreground space-y-1">
+        <p><strong>Control Financiero</strong> v1.0.0</p>
+        <p>Aplicacion de control de gastos, presupuestos y deudas personales.</p>
+        <p>Desarrollado como proyecto PWA.</p>
+        <p>Todos los datos se almacenan localmente en tu dispositivo.</p>
+      </section>
+    </div>
+
+  </div>
+
+  <!-- Clear Data Confirmation Dialog -->
+  <dialog class="dialog" id="clear-data-dialog" onclick="if(event.target===this) this.close()">
+    <div class="w-full sm:max-w-[380px]">
+      <header>
+        <h2>Borrar Todos los Datos</h2>
+        <p>Esta seguro? Se eliminaran TODOS los gastos, presupuestos, deudas y configuraciones. Esta accion no se puede deshacer.</p>
+      </header>
+      <footer>
+        <button class="btn-outline" onclick="document.getElementById('clear-data-dialog').close()">Cancelar</button>
+        <button class="btn" style="background-color: var(--destructive);" id="confirm-clear-btn">Si, borrar todo</button>
+      </footer>
+    </div>
+  </dialog>
+
+  <div id="toaster" class="toaster"></div>
+</body>
+
+</html>
