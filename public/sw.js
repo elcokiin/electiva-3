@@ -4,7 +4,7 @@
  * Strategy: Cache-first for App Shell, Network-first for dynamic content
  */
 
-const CACHE_NAME = 'finanzas-v1';
+const CACHE_NAME = 'finanzas-v2';
 const APP_SHELL = [
   '/',
   '/index.html',
@@ -63,7 +63,8 @@ self.addEventListener('activate', (event) => {
 });
 
 // ─── Fetch Event ───
-// Cache-first for App Shell, Network-first for other requests
+// Navigation: network-first with cache fallback
+// Assets (css/js/fonts/images): stale-while-revalidate
 self.addEventListener('fetch', (event) => {
   const { request } = event;
 
@@ -73,29 +74,83 @@ self.addEventListener('fetch', (event) => {
   // Skip chrome-extension and other non-http requests
   if (!request.url.startsWith('http')) return;
 
-  event.respondWith(
-    caches.match(request).then((cachedResponse) => {
-      // If found in cache, return cached version
-      if (cachedResponse) {
-        // Fetch in background to update cache (stale-while-revalidate for assets)
-        fetchAndCache(request);
-        return cachedResponse;
+  if (request.mode === 'navigate' || request.destination === 'document') {
+    event.respondWith(networkFirst(request, '/index.html'));
+    return;
+  }
+
+  if (isStaticAsset(request)) {
+    event.respondWith(staleWhileRevalidate(request));
+    return;
+  }
+
+  event.respondWith(networkFirst(request));
+});
+
+/**
+ * Determines if request is a static asset likely needed for paint/perceived performance
+ * @param {Request} request
+ * @returns {boolean}
+ */
+function isStaticAsset(request) {
+  const destination = request.destination;
+  return (
+    destination === 'style' ||
+    destination === 'script' ||
+    destination === 'font' ||
+    destination === 'image'
+  );
+}
+
+/**
+ * Network-first strategy with cache fallback
+ * @param {Request} request
+ * @param {string} [fallbackPath]
+ * @returns {Promise<Response>}
+ */
+function networkFirst(request, fallbackPath) {
+  return fetchAndCache(request)
+    .then((response) => response)
+    .catch(async () => {
+      const cached = await caches.match(request);
+      if (cached) return cached;
+
+      if (fallbackPath) {
+        const fallback = await caches.match(fallbackPath);
+        if (fallback) return fallback;
       }
 
-      // Not in cache, try network
-      return fetchAndCache(request).catch(() => {
-        // If network fails and it's a navigation request, show offline page
-        if (request.mode === 'navigate') {
-          return caches.match('/index.html');
-        }
-        return new Response('Sin conexion', {
-          status: 503,
-          statusText: 'Service Unavailable',
-        });
+      return new Response('Sin conexion', {
+        status: 503,
+        statusText: 'Service Unavailable',
       });
-    })
-  );
-});
+    });
+}
+
+/**
+ * Stale-while-revalidate strategy for static assets
+ * @param {Request} request
+ * @returns {Promise<Response>}
+ */
+async function staleWhileRevalidate(request) {
+  const cached = await caches.match(request);
+
+  const networkPromise = fetchAndCache(request).catch(() => null);
+
+  if (cached) {
+    return cached;
+  }
+
+  const networkResponse = await networkPromise;
+  if (networkResponse) {
+    return networkResponse;
+  }
+
+  return new Response('Sin conexion', {
+    status: 503,
+    statusText: 'Service Unavailable',
+  });
+}
 
 /**
  * Fetch a request and cache the response

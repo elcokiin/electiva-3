@@ -3,10 +3,11 @@
  * Handles: imports, service worker registration, DB initialization, layout injection
  */
 
-import 'basecoat-css/all';
-import './styles.css';
 import { initDB } from './js/db.js';
 import { injectLayout, setupConnectivityIndicator } from './js/layout.js';
+
+// Prevent layout remount flicker while shared shell is injected
+document.documentElement.classList.add('app-layout-pending');
 
 // ─── Theme Switcher (must run early to prevent FOUC) ───
 (() => {
@@ -58,6 +59,15 @@ if ('serviceWorker' in navigator) {
 
 // ─── App Initialization ───
 document.addEventListener('DOMContentLoaded', async () => {
+  // Inject shared layout
+  injectLayout();
+
+  // Reveal content after layout has been injected
+  document.documentElement.classList.remove('app-layout-pending');
+
+  // Setup online/offline indicator
+  setupConnectivityIndicator();
+
   // Initialize database
   try {
     await initDB();
@@ -65,12 +75,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   } catch (error) {
     console.error('[App] Error al inicializar base de datos:', error);
   }
-
-  // Inject shared layout
-  injectLayout();
-
-  // Setup online/offline indicator
-  setupConnectivityIndicator();
 
   // Dispatch event for page-specific scripts
   window.dispatchEvent(new CustomEvent('appReady'));
