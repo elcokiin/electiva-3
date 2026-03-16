@@ -251,7 +251,8 @@ html.app-layout-pending #page-content {
 .app-main {
   flex: 1;
   padding: 1.5rem 1rem;
-  padding-bottom: 5rem; /* Space for mobile nav */
+  padding-bottom: 5rem;
+  /* Space for mobile nav */
   min-width: 0;
 }
 
@@ -514,6 +515,7 @@ html.app-layout-pending #page-content {
   background-color: oklch(0.85 0.15 150 / 0.2);
   color: oklch(0.45 0.15 150);
 }
+
 .dark .priority-baja {
   background-color: oklch(0.45 0.15 150 / 0.2);
   color: oklch(0.75 0.15 150);
@@ -523,6 +525,7 @@ html.app-layout-pending #page-content {
   background-color: oklch(0.85 0.15 85 / 0.2);
   color: oklch(0.55 0.15 85);
 }
+
 .dark .priority-media {
   background-color: oklch(0.55 0.15 85 / 0.2);
   color: oklch(0.80 0.15 85);
@@ -532,6 +535,7 @@ html.app-layout-pending #page-content {
   background-color: oklch(0.85 0.18 25 / 0.2);
   color: oklch(0.50 0.18 25);
 }
+
 .dark .priority-alta {
   background-color: oklch(0.50 0.18 25 / 0.2);
   color: oklch(0.80 0.15 25);
@@ -541,9 +545,11 @@ html.app-layout-pending #page-content {
 .progress-green {
   accent-color: oklch(0.60 0.18 150);
 }
+
 .progress-yellow {
   accent-color: oklch(0.75 0.15 85);
 }
+
 .progress-red {
   accent-color: oklch(0.55 0.20 25);
 }
@@ -565,9 +571,11 @@ html.app-layout-pending #page-content {
 .budget-progress-fill.green {
   background-color: oklch(0.60 0.18 150);
 }
+
 .budget-progress-fill.yellow {
   background-color: oklch(0.75 0.15 85);
 }
+
 .budget-progress-fill.red {
   background-color: oklch(0.55 0.20 25);
 }

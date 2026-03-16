@@ -230,20 +230,42 @@ function renderDistributionChart(expenses) {
   const data = entries.map(([, amount]) => amount);
   const chartColors = entries.map(([catId]) => {
     const cat = getCategoryById(catId);
-    return cat?.color || 'var(--muted-foreground)';
+    const rawColor = cat?.color || 'var(--muted-foreground)';
+
+    if (!rawColor.startsWith('var(')) return rawColor;
+
+    const varName = rawColor.slice(4, -1).trim();
+    const resolved = getComputedStyle(document.documentElement)
+      .getPropertyValue(varName)
+      .trim();
+
+    return resolved || rawColor;
   });
+
+  const totalAmount = data.reduce((sum, amount) => sum + amount, 0);
+  const colors = getThemeColors();
 
   chartDistribution = createDoughnutChart(canvas, {
     labels,
     data,
     colors: chartColors,
   }, {
+    cutout: '58%',
     plugins: {
+      legend: {
+        position: 'bottom',
+        labels: {
+          color: colors.foreground,
+          usePointStyle: true,
+          pointStyleWidth: 10,
+          padding: 14,
+          font: { size: 11 },
+        },
+      },
       tooltip: {
         callbacks: {
           label: (ctx) => {
-            const total = ctx.dataset.data.reduce((a, b) => a + b, 0);
-            const pct = ((ctx.raw / total) * 100).toFixed(1);
+            const pct = totalAmount > 0 ? ((ctx.raw / totalAmount) * 100).toFixed(1) : '0.0';
             return `${ctx.label}: ${formatCOP(ctx.raw)} (${pct}%)`;
           },
         },
