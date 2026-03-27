@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Leer después | Rick &amp; Morty PWA</title>
+  <link rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        crossorigin="anonymous" />
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-dark bg-dark">
+    <a class="navbar-brand" href="../index.html">
+      ← Rick &amp; Morty PWA
+    </a>
+    <span class="navbar-text text-warning font-weight-bold">📚 Leer después</span>
+  </nav>
+
+  <div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2>Guardados para leer después</h2>
+      <button class="btn btn-outline-danger btn-sm" onclick="limpiarTodo()">
+        🗑️ Limpiar todo
+      </button>
+    </div>
+
+    <p class="text-muted small">
+      Estos personajes se guardan en tu dispositivo (LocalStorage) y están disponibles
+      aunque no tengas conexión.
+    </p>
+
+    <!-- Mensaje vacío -->
+    <div id="empty-msg" class="text-center py-5 d-none">
+      <p class="text-muted lead">No tienes personajes guardados todavía.</p>
+      <a href="../index.html" class="btn btn-primary">Explorar personajes</a>
+    </div>
+
+    <!-- Lista guardada -->
+    <div id="lista-guardados" class="row"></div>
+
+  </div>
+
+  <script src="./js/leer-despues.js"></script>
+</body>
+</html>
