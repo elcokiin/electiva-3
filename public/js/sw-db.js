@@ -23,6 +23,16 @@ function guardarMensaje( mensaje ) {
 
             return new Response( JSON.stringify(newResp) );
 
+        }).catch(err => {
+            console.error('Error al guardar en PouchDB:', err);
+            return new Response( JSON.stringify({ ok: false, error: 'Error al almacenar mensaje' }), {
+                status: 500
+            });
+        });
+    }).catch(err => {
+        console.error('Error al obtener ID:', err);
+        return new Response( JSON.stringify({ ok: false, error: 'Error al generar ID' }), {
+            status: 500
         });
     });
 
@@ -47,10 +57,25 @@ function postearMensajes() {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify( doc )
-                }).then( res => {
-
+                }).then( res => res.json() )
+                .then( data => {
+                    if (!data.ok) {
+                        console.error('Error al subir mensaje:', data.error);
+                        throw new Error(data.error || 'Error al subir mensaje');
+                    }
                     return db.remove( doc );
-
+                })
+                .catch(err => {
+                    console.error('Error al sincronizar mensaje:', err);
+                    clients.matchAll().then(clients => {
+                        clients.forEach(client => {
+                            client.postMessage({
+                                type: 'SYNC_ERROR',
+                                error: err.message || 'Error al sincronizar mensaje'
+                            });
+                        });
+                    });
+                    throw err;
                 });
             
             posteos.push( fetchPom );
@@ -61,8 +86,6 @@ function postearMensajes() {
         return Promise.all( posteos );
 
     });
-
-
 
 
 

@@ -1,58 +1,45 @@
-
 var url = window.location.href;
-var swLocation = '/sw.js';
+var swLocation = "/sw.js";
 
+if (navigator.serviceWorker) {
+  if (url.includes("localhost")) {
+    swLocation = "/sw.js";
+  }
 
-if ( navigator.serviceWorker ) {
-
-
-    if ( url.includes('localhost') ) {
-        swLocation = '/sw.js';
-    }
-
-
-    navigator.serviceWorker.register( swLocation );
+  navigator.serviceWorker.register(swLocation);
 }
-
-
-
-
 
 // Referencias de jQuery
 
-var titulo      = $('#titulo');
-var nuevoBtn    = $('#nuevo-btn');
-var salirBtn    = $('#salir-btn');
-var cancelarBtn = $('#cancel-btn');
-var postBtn     = $('#post-btn');
-var avatarSel   = $('#seleccion');
-var timeline    = $('#timeline');
+var titulo = $("#titulo");
+var nuevoBtn = $("#nuevo-btn");
+var salirBtn = $("#salir-btn");
+var cancelarBtn = $("#cancel-btn");
+var postBtn = $("#post-btn");
+var avatarSel = $("#seleccion");
+var timeline = $("#timeline");
 
-var modal       = $('#modal');
-var modalAvatar = $('#modal-avatar');
-var avatarBtns  = $('.seleccion-avatar');
-var txtMensaje  = $('#txtMensaje');
+var modal = $("#modal");
+var modalAvatar = $("#modal-avatar");
+var avatarBtns = $(".seleccion-avatar");
+var txtMensaje = $("#txtMensaje");
 
 // El usuario, contiene el ID del hÃ©roe seleccionado
 var usuario;
 
-
-
-
 // ===== Codigo de la aplicaciÃ³n
 
 function crearMensajeHTML(mensaje, personaje) {
-
-    var content =`
+  var content = `
     <li class="animated fadeIn fast">
         <div class="avatar">
-            <img src="img/avatars/${ personaje }.jpg">
+            <img src="img/avatars/${personaje}.jpg">
         </div>
         <div class="bubble-container">
             <div class="bubble">
-                <h3>@${ personaje }</h3>
+                <h3>@${personaje}</h3>
                 <br/>
-                ${ mensaje }
+                ${mensaje}
             </div>
             
             <div class="arrow"></div>
@@ -60,166 +47,172 @@ function crearMensajeHTML(mensaje, personaje) {
     </li>
     `;
 
-    timeline.prepend(content);
-    cancelarBtn.click();
-
+  timeline.prepend(content);
+  cancelarBtn.click();
 }
-
-
 
 // Globals
-function logIn( ingreso ) {
+function logIn(ingreso) {
+  if (ingreso) {
+    nuevoBtn.removeClass("oculto");
+    salirBtn.removeClass("oculto");
+    timeline.removeClass("oculto");
+    avatarSel.addClass("oculto");
+    modalAvatar.attr("src", "img/avatars/" + usuario + ".jpg");
+  } else {
+    nuevoBtn.addClass("oculto");
+    salirBtn.addClass("oculto");
+    timeline.addClass("oculto");
+    avatarSel.removeClass("oculto");
 
-    if ( ingreso ) {
-        nuevoBtn.removeClass('oculto');
-        salirBtn.removeClass('oculto');
-        timeline.removeClass('oculto');
-        avatarSel.addClass('oculto');
-        modalAvatar.attr('src', 'img/avatars/' + usuario + '.jpg');
-    } else {
-        nuevoBtn.addClass('oculto');
-        salirBtn.addClass('oculto');
-        timeline.addClass('oculto');
-        avatarSel.removeClass('oculto');
-
-        titulo.text('Seleccione Personaje');
-    
-    }
-
+    titulo.text("Seleccione Personaje");
+  }
 }
 
-
 // Seleccion de personaje
-avatarBtns.on('click', function() {
+avatarBtns.on("click", function () {
+  usuario = $(this).data("user");
 
-    usuario = $(this).data('user');
+  titulo.text("@" + usuario);
 
-    titulo.text('@' + usuario);
-
-    logIn(true);
-
+  logIn(true);
 });
 
 // Boton de salir
-salirBtn.on('click', function() {
-
-    logIn(false);
-
+salirBtn.on("click", function () {
+  logIn(false);
 });
 
 // Boton de nuevo mensaje
-nuevoBtn.on('click', function() {
-
-    modal.removeClass('oculto');
-    modal.animate({ 
-        marginTop: '-=1000px',
-        opacity: 1
-    }, 200 );
-
+nuevoBtn.on("click", function () {
+  modal.removeClass("oculto");
+  modal.animate(
+    {
+      marginTop: "-=1000px",
+      opacity: 1,
+    },
+    200,
+  );
 });
 
-
 // Boton de cancelar mensaje
-cancelarBtn.on('click', function() {
-    if ( !modal.hasClass('oculto') ) {
-        modal.animate({ 
-            marginTop: '+=1000px',
-            opacity: 0
-         }, 200, function() {
-             modal.addClass('oculto');
-             txtMensaje.val('');
-         });
-    }
+cancelarBtn.on("click", function () {
+  if (!modal.hasClass("oculto")) {
+    modal.animate(
+      {
+        marginTop: "+=1000px",
+        opacity: 0,
+      },
+      200,
+      function () {
+        modal.addClass("oculto");
+        txtMensaje.val("");
+      },
+    );
+  }
 });
 
 // Enviar nuevo mensaje
 function enviarNuevoMensaje(user, mensaje) {
-    var data = {
-        mensaje: mensaje,
-        user: user
-    };
+  var data = {
+    mensaje: mensaje,
+    user: user,
+  };
 
-    fetch('api', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
+  fetch("api", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+    .then((res) => res.json())
+    .then((res) => {
+      if (res.ok) {
+        crearMensajeHTML(mensaje, user);
+      } else {
+        $.mdtoast(res.error || "Error al guardar mensaje", {
+          interaction: true,
+          actionText: "OK",
+          type: "error",
+        });
+      }
     })
-    .then(res => res.json())
-    .then(res => {
-        if (res.ok) {
-            crearMensajeHTML(mensaje, user);
-        } else {
-            console.log('Error:', res.error);
-        }
-    })
-    .catch(err => console.log('app.js error:', err));
+    .catch((err) => {
+      console.log("app.js error:", err);
+      $.mdtoast("Error de conexión al enviar mensaje", {
+        interaction: true,
+        actionText: "OK",
+        type: "error",
+      });
+    });
 }
 
-
 // Boton de enviar mensaje
-postBtn.on('click', function() {
+postBtn.on("click", function () {
+  var mensaje = txtMensaje.val();
+  if (mensaje.length === 0) {
+    cancelarBtn.click();
+    return;
+  }
 
-    var mensaje = txtMensaje.val();
-    if ( mensaje.length === 0 ) {
-        cancelarBtn.click();
-        return;
-    }
-
-    enviarNuevoMensaje(usuario, mensaje);
-
+  enviarNuevoMensaje(usuario, mensaje);
 });
-
-
 
 // Obtener mensajes del servidor
 function getMensajes() {
-
-    fetch('api')
-        .then( res => res.json() )
-        .then( posts => {
-
-            console.log(posts);
-            posts.forEach( post =>
-                crearMensajeHTML( post.mensaje, post.user ));
-
-
-        });
-
-
+  fetch("api")
+    .then((res) => res.json())
+    .then((posts) => {
+      console.log(posts);
+      posts.forEach((post) => crearMensajeHTML(post.mensaje, post.user));
+    })
+    .catch((err) => {
+      console.log("Error al obtener mensajes:", err);
+      $.mdtoast("Error al obtener mensajes", {
+        interaction: true,
+        actionText: "OK",
+        type: "error",
+      });
+    });
 }
 
 getMensajes();
 
-
-
 // Detectar cambios de conexión
 function isOnline() {
-
-    if ( navigator.onLine ) {
-        // tenemos conexión
-        // console.log('online');
-        $.mdtoast('Online', {
-            interaction: true,
-            interactionTimeout: 1000,
-            actionText: 'OK!'
-        });
-
-
-    } else{
-        // No tenemos conexión
-        $.mdtoast('Offline', {
-            interaction: true,
-            actionText: 'OK',
-            type: 'warning'
-        });
-    }
-
+  if (navigator.onLine) {
+    // tenemos conexión
+    // console.log('online');
+    $.mdtoast("Online", {
+      interaction: true,
+      interactionTimeout: 1000,
+      actionText: "OK!",
+    });
+  } else {
+    // No tenemos conexión
+    $.mdtoast("Offline", {
+      interaction: true,
+      actionText: "OK",
+      type: "warning",
+    });
+  }
 }
 
-window.addEventListener('online', isOnline );
-window.addEventListener('offline', isOnline );
+window.addEventListener("online", isOnline);
+window.addEventListener("offline", isOnline);
 
 isOnline();
 
+// Escuchar errores de sincronización del Service Worker
+if (navigator.serviceWorker) {
+  navigator.serviceWorker.addEventListener("message", (event) => {
+    if (event.data && event.data.type === "SYNC_ERROR") {
+      $.mdtoast(event.data.error, {
+        interaction: true,
+        actionText: "OK",
+        type: "error",
+      });
+    }
+  });
+}
