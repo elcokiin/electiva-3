@@ -132,6 +132,32 @@ cancelarBtn.on('click', function() {
     }
 });
 
+// Enviar nuevo mensaje
+function enviarNuevoMensaje(user, mensaje) {
+    var data = {
+        mensaje: mensaje,
+        user: user
+    };
+
+    fetch('api', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(res => res.json())
+    .then(res => {
+        if (res.ok) {
+            crearMensajeHTML(mensaje, user);
+        } else {
+            console.log('Error:', res.error);
+        }
+    })
+    .catch(err => console.log('app.js error:', err));
+}
+
+
 // Boton de enviar mensaje
 postBtn.on('click', function() {
 
@@ -141,26 +167,7 @@ postBtn.on('click', function() {
         return;
     }
 
-    var data = {
-        mensaje: mensaje,
-        user: usuario
-    };
-
-
-    fetch('api', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify( data )
-    })
-    .then( res => res.json() )
-    .then( res => console.log( 'app.js', res ))
-    .catch( err => console.log( 'app.js error:', err ));
-
-
-
-    crearMensajeHTML( mensaje, usuario );
+    enviarNuevoMensaje(usuario, mensaje);
 
 });
 

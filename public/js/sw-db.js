@@ -1,19 +1,29 @@
 // Utilidades para grabar PouchDB
 const db = new PouchDB('mensajes');
 
+function obtenerSiguienteId() {
+    return db.get('contador').catch(() => ({ _id: 'contador', valor: 0 }))
+        .then(doc => {
+            const nuevoId = doc.valor + 1;
+            doc.valor = nuevoId;
+            return db.put(doc).then(() => nuevoId);
+        });
+}
 
 function guardarMensaje( mensaje ) {
 
-    mensaje._id = new Date().toISOString();
+    return obtenerSiguienteId().then(id => {
+        mensaje._id = id.toString();
 
-    return db.put( mensaje ).then( () => {
+        return db.put( mensaje ).then( () => {
 
-        self.registration.sync.register('nuevo-post');
+            self.registration.sync.register('nuevo-post');
 
-        const newResp = { ok: true, offline: true };
+            const newResp = { ok: true, offline: true };
 
-        return new Response( JSON.stringify(newResp) );
+            return new Response( JSON.stringify(newResp) );
 
+        });
     });
 
 }
