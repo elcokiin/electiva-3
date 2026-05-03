@@ -163,7 +163,7 @@ self.addEventListener('push', e => {
 
         // Ejemplo 2 (SOS): [100, 30, 100, 30, 100, 30, 200, 30, 200, 30, 200, 30, 100, 30, 100, 30, 100]
         // vibrate: [100, 30, 100, 30, 100, 30, 200, 30, 200, 30, 200, 30, 100, 30, 100, 30, 100],
-        
+
         // Ejemplo 3 (Doble pulso rápido): [200, 100, 200]
         vibrate: [100, 50, 100, 50, 100], // Escogiendo un patrón llamativo y corto
         
@@ -179,8 +179,7 @@ self.addEventListener('push', e => {
         
         openUrl: '/',
         data: {
-            // url: 'https://google.com',
-            url: '/',
+            url: `/?chat=${data.usuario}`, //URL para llevar a un hilo especifico
             id: data.usuario
         },
         

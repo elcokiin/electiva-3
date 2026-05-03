@@ -489,17 +489,10 @@ function getPublicKey() {
 btnDesactivadas.on('click', async function() {
 
     try {
-        if (!swReg) {
-            console.log('No hay registro de SW');
-            return;
-        }
+        if (!swReg) return;
 
         const permitido = await solicitarPermisoNotificaciones();
-
-        if (!permitido) {
-            console.log('El usuario no concedió permisos');
-            return;
-        }
+        if (!permitido) return;
 
         const key = await getPublicKey();
 
@@ -508,18 +501,28 @@ btnDesactivadas.on('click', async function() {
             applicationServerKey: key
         });
 
-        await fetch('api/subscribe', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(subscription)
+        // Obtener usuario actual del IndexedDB para identificar de quien es el telefono/navegador
+        loginDB.get('current_user').then(function(doc) {
+            fetch('api/subscribe', {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'X-Username': doc.user // Identifica el payload Push en el servidor
+                },
+                body: JSON.stringify(subscription)
+            }).then(() => verificaSuscripcion(subscription));
+        }).catch(function(err) {
+            // Por si no esta logueado pero activa push
+            fetch('api/subscribe', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(subscription)
+            }).then(() => verificaSuscripcion(subscription));
         });
-
-        verificaSuscripcion(subscription);
 
     } catch (err) {
         console.error('Error al activar notificaciones push:', err);
     }
-
 });
 
 

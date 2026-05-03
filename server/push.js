@@ -25,50 +25,43 @@ module.exports.getKey = () => {
 
 
 
-module.exports.addSubscription = (suscripcion) => {
-    console.log('Antes enviar suscripción ');
-    suscripciones.push(suscripcion);
+module.exports.addSubscription = (suscripcion, username) => {
+    suscripciones.push({
+        sus: suscripcion,
+        username: username || 'general'
+    });
 
-    console.log('antes modificar subs-db.json');
     fs.writeFileSync(`${__dirname}/subs-db.json`, JSON.stringify(suscripciones));
-    console.log('Nueva suscripción agregada');
+    console.log('Nueva suscripción agregada, usuario:', username);
 };
 
 
 module.exports.sendPush = (post) => {
-
     console.log('Mandando PUSHES');
-
     const notificacionesEnviadas = [];
 
+    suscripciones.forEach((suscripcionObj, i) => {
 
-    suscripciones.forEach((suscripcion, i) => {
+        // Si el post indica un objetivo especifico y no somos nosotros, salta
+        if (post.targetUser && post.targetUser !== suscripcionObj.username && post.targetUser !== 'all') {
+            return;
+        }
 
-
-        const pushProm = webpush.sendNotification(suscripcion, JSON.stringify(post))
-            .then(console.log('Notificacion enviada '))
+        const pushProm = webpush.sendNotification(suscripcionObj.sus, JSON.stringify(post))
+            .then(() => console.log('Notificacion enviada '))
             .catch(err => {
-
                 console.log('Notificación falló');
-
-                if (err.statusCode === 410) { // GONE, ya no existe
+                if (err.statusCode === 410) { // GONE
                     suscripciones[i].borrar = true;
                 }
-
             });
 
         notificacionesEnviadas.push(pushProm);
-
     });
 
     Promise.all(notificacionesEnviadas).then(() => {
-
-
         suscripciones = suscripciones.filter(subs => !subs.borrar);
-
         fs.writeFileSync(`${__dirname}/subs-db.json`, JSON.stringify(suscripciones));
-
     });
-
 }
 

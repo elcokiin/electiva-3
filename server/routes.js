@@ -41,21 +41,15 @@ router.post('/', function (req, res) {
 });
 
 
-// Almacenar la suscripción
+// Almacenar la suscripcion
 router.post('/subscribe', (req, res) => {
-
-
   const suscripcion = req.body;
+  const username = req.headers['x-username'] || 'general';
 
-  
-  push.addSubscription( suscripcion );
-
+  push.addSubscription( suscripcion, username );
 
   res.json('subscribe');
-
-});
-
-// Almacenar la suscripción
+});// Almacenar la suscripción
 router.get('/key', (req, res) => {
 
   const key = push.getKey();
