@@ -1,0 +1,48 @@
+<h2>Buscar Pokémon</h2>
+
+<div class="input-group mb-3">
+  <input [(ngModel)]="termino"
+         class="form-control"
+         placeholder="Nombre o número (ej: pikachu, 25)"
+         (keyup.enter)="buscar()"/>
+  <button class="btn btn-danger" (click)="buscar()" [disabled]="cargando">
+    {{ cargando ? 'Buscando...' : 'Buscar' }}
+  </button>
+</div>
+
+@if (cargando) {
+  <div class="text-center my-4">
+    <div class="spinner-border text-danger"></div>
+  </div>
+}
+
+@if (error) {
+  <div class="alert alert-danger">{{ error }}</div>
+}
+
+@if (resultado && !cargando) {
+  <div class="card shadow" style="max-width: 400px">
+    <img [src]="resultado.sprites.other['official-artwork'].front_default"
+         class="card-img-top p-3"
+         [alt]="resultado.name"/>
+    <div class="card-body">
+      <h5 class="card-title text-capitalize fw-bold">
+        {{ resultado.name }}
+        <small class="text-muted">#{{ resultado.id }}</small>
+      </h5>
+      <p>
+        @for (t of resultado.types; track t.slot) {
+          <span class="badge bg-danger me-1">{{ t.type.name }}</span>
+        }
+      </p>
+      <p>
+        <strong>Altura:</strong> {{ resultado.height / 10 }} m &nbsp;|&nbsp;
+        <strong>Peso:</strong> {{ resultado.weight / 10 }} kg
+      </p>
+      <a [routerLink]="['/pokemon', resultado.id]"
+         class="btn btn-danger w-100">
+        Ver detalle completo
+      </a>
+    </div>
+  </div>
+}

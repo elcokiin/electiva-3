@@ -1,0 +1,20 @@
+<h2>Mis Favoritos</h2>
+@if (favoritos.length === 0) {
+  <div class="alert alert-info">No tienes favoritos guardados aún.</div>
+} @else {
+  <div class="row row-cols-2 row-cols-md-4 g-3">
+    @for (p of favoritos; track p.id) {
+      <div class="col">
+        <div class="card h-100 text-center">
+          <img [src]="p.sprites.other['official-artwork'].front_default"
+               class="card-img-top" [alt]="p.name"/>
+          <div class="card-body">
+            <p class="text-capitalize fw-bold">{{ p.name }}</p>
+            <a [routerLink]="['/pokemon', p.id]" class="btn btn-sm btn-outline-danger me-1">Ver</a>
+            <button class="btn btn-sm btn-danger" (click)="eliminar(p.id)">Eliminar</button>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+}

@@ -1,0 +1,68 @@
+@if (pokemon$ | async; as pokemon) {
+  <a routerLink="/lista" class="btn btn-outline-secondary mb-3">← Volver</a>
+
+  <div class="row">
+    <div class="col-md-4 text-center">
+      <img [src]="pokemon.sprites.other['official-artwork'].front_default"
+           [alt]="pokemon.name" class="img-fluid rounded shadow"/>
+
+      <button class="btn mt-3 w-100"
+              [class.btn-warning]="guardado"
+              [class.btn-outline-warning]="!guardado"
+              (click)="toggleFavorito(pokemon)">
+        {{ guardado ? '★ En favoritos' : '☆ Agregar favorito' }}
+      </button>
+    </div>
+
+    <div class="col-md-8">
+      <h2 class="text-capitalize">
+        {{ pokemon.name }}
+        <small class="text-muted">#{{ pokemon.id }}</small>
+      </h2>
+
+      <p>
+        <strong>Tipo: </strong>
+        @for (t of pokemon.types; track t.slot) {
+          <span class="badge bg-danger me-1">{{ t.type.name }}</span>
+        }
+      </p>
+
+      <p>
+        <strong>Altura:</strong> {{ pokemon.height / 10 }} m &nbsp;|&nbsp;
+        <strong>Peso:</strong> {{ pokemon.weight / 10 }} kg
+      </p>
+
+      <h5>Estadísticas</h5>
+      <table class="table table-sm">
+        <tbody>
+          @for (s of pokemon.stats; track s.stat.name) {
+            <tr>
+              <td class="text-capitalize" style="width: 140px">{{ s.stat.name }}</td>
+              <td>
+                <div class="progress" style="height: 20px">
+                  <div class="progress-bar bg-danger"
+                       [style.width.%]="(s.base_stat / 255) * 100">
+                    {{ s.base_stat }}
+                  </div>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+
+      <h5>Habilidades</h5>
+      <ul>
+        @for (a of pokemon.abilities; track a.ability.name) {
+          <li class="text-capitalize">{{ a.ability.name }}</li>
+        }
+      </ul>
+    </div>
+  </div>
+
+} @else {
+  <div class="text-center my-5">
+    <div class="spinner-border text-danger"></div>
+    <p class="mt-2">Cargando datos del Pokémon...</p>
+  </div>
+}
