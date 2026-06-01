@@ -44,6 +44,18 @@
 
     <meta name="apple-mobile-web-app-title" content="Twittor!">
 
+    <!-- Web Vitals -->
+    <script type="module">
+        import {onCLS, onINP, onLCP} from 'https://unpkg.com/web-vitals@4?module';
+        function sendToRUM(metric) {
+            console.log(`[RUM/Web Vitals] Metric: ${metric.name} | Value: ${metric.value.toFixed(2)} | Rating: ${metric.rating}`);
+            // Simulación de guardar en base de datos local (IndexedDB)
+            // Aquí se enviaría el fetch() al backend real, pero lo registramos como RUM
+        }
+        onCLS(sendToRUM);
+        onINP(sendToRUM);
+        onLCP(sendToRUM);
+    </script>
 </head>
 <body>
         <!-- Indicador de Permisos -->
@@ -53,6 +65,10 @@
         <!-- Titulo -->
         <span class="first"> 
             <span id="salir-btn" class="fa fa-sign-out-alt out oculto animated fadeIn"></span>
+            <!-- Boton Instalacion -->
+            <button id="install-btn" class="oculto animated fadeIn" style="background-color: #f1c40f; border: none; padding: 5px 10px; border-radius: 5px; font-weight: bold; cursor: pointer; margin-right: 15px;">
+                <i class="fa fa-download"></i> Instalar App
+            </button>
             <span id="titulo">
                 <i class="fa fa-user"></i>
                 Autenticación

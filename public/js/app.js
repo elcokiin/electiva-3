@@ -37,6 +37,7 @@ var loginUser = $('#login-username');
 var loginPass = $('#login-password');
 var loginError = $('#login-error');
 var loginFail = $('#login-fail');
+var btnInstall = $('#install-btn');
 
 var modal       = $('#modal');
 var modalAvatar = $('#modal-avatar');
@@ -50,6 +51,32 @@ var btnDesactivadas = $('.btn-noti-desactivadas');
 var usuario;
 
 // ===== Codigo de la aplicación
+
+var deferredPrompt;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  // Evitar que recargue la página Chrome y muestre su propio prompt si queremos
+  e.preventDefault();
+  // Guardar el evento para dispararlo luego
+  deferredPrompt = e;
+  
+  // Mostrar nuestro botón personalizado (le quitamos 'oculto' y clases necesarias)
+  btnInstall.removeClass('oculto');
+});
+
+btnInstall.on('click', async () => {
+    if (deferredPrompt) {
+        // Obtenemos el evento guardado y lo disparamos
+        deferredPrompt.prompt();
+        // Esperamos la accion del usuario
+        const { outcome } = await deferredPrompt.userChoice;
+        console.log(`User choice result: ${outcome}`);
+        // Ya no podemos volver a usar the prompt luego
+        deferredPrompt = null;
+        // Ocultamos el botón
+        btnInstall.addClass('oculto');
+    }
+});
 
 function crearMensajeHTML(mensaje, personaje) {
 
